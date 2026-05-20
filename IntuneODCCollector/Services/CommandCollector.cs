@@ -111,14 +111,17 @@ public class CommandCollector
             CreateNoWindow = true,
         };
         proc.Start();
-        var stdout = proc.StandardOutput.ReadToEnd();
-        var stderr = proc.StandardError.ReadToEnd();
+
+        var stdoutTask = Task.Run(() => proc.StandardOutput.ReadToEnd());
+        var stderrTask = Task.Run(() => proc.StandardError.ReadToEnd());
+
         if (!proc.WaitForExit(timeoutMs))
         {
             proc.Kill(entireProcessTree: true);
             throw new TimeoutException($"Process {exe} exceeded {timeoutMs}ms timeout.");
         }
-        return (stdout, stderr);
+
+        return (stdoutTask.Result, stderrTask.Result);
     }
 
     private static void TryDelete(string path)
