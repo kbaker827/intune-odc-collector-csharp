@@ -1,9 +1,9 @@
 ﻿<Application x:Class="IntuneODCCollector.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:IntuneODCCollector"
+             xmlns:converters="clr-namespace:IntuneODCCollector.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
     </Application.Resources>
 </Application>
