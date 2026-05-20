@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="IntuneODCCollector.Tests/IntuneODCCollector.Tests.csproj" />
+  <Project Path="IntuneODCCollector/IntuneODCCollector.csproj" />
+</Solution>
