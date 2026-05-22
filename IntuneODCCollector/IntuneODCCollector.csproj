@@ -12,5 +12,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>IntuneODCCollector</AssemblyName>
     <RootNamespace>IntuneODCCollector</RootNamespace>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
+    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 </Project>
