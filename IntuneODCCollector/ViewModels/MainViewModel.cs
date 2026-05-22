@@ -13,6 +13,7 @@ public class MainViewModel : INotifyPropertyChanged
     private const string LogDir = @"C:\IntuneODCLogs";
 
     private readonly CollectorService _collector = new();
+    private readonly System.Text.StringBuilder _logBuilder = new();
     private CancellationTokenSource? _cts;
 
     private double _progressValue;
@@ -70,6 +71,7 @@ public class MainViewModel : INotifyPropertyChanged
         IsRunning    = true;
         CanOpenFolder = false;
         ProgressValue = 0;
+        _logBuilder.Clear();
         OutputLog    = string.Empty;
         _cts         = new CancellationTokenSource();
 
@@ -106,8 +108,9 @@ public class MainViewModel : INotifyPropertyChanged
         finally
         {
             IsRunning = false;
-            _cts?.Dispose();
+            var cts = _cts;
             _cts = null;
+            cts?.Dispose();
         }
     }
 
@@ -137,10 +140,11 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void Log(string message)
     {
-        var line = string.IsNullOrEmpty(message)
-            ? string.Empty
-            : $"[{DateTime.Now:HH:mm:ss}] {message}";
-        OutputLog += line + "\n";
+        if (string.IsNullOrEmpty(message))
+            _logBuilder.AppendLine();
+        else
+            _logBuilder.AppendLine($"[{DateTime.Now:HH:mm:ss}] {message}");
+        OutputLog = _logBuilder.ToString();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
