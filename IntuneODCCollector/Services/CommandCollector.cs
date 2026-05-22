@@ -121,6 +121,7 @@ public class CommandCollector
             throw new TimeoutException($"Process {exe} exceeded {timeoutMs}ms timeout.");
         }
 
+        Task.WhenAll(stdoutTask, stderrTask).GetAwaiter().GetResult();
         return (stdoutTask.Result, stderrTask.Result);
     }
 

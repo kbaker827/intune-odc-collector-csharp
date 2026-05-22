@@ -38,12 +38,16 @@ public class RegistryCollector
                     FileName = "reg.exe",
                     Arguments = $"export \"{regPath}\" \"{dest}\" /y /reg:64",
                     UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
                     CreateNoWindow = true,
                 };
                 proc.Start();
-                proc.WaitForExit(30_000);
+                bool exited = proc.WaitForExit(30_000);
+                if (!exited)
+                {
+                    proc.Kill(entireProcessTree: true);
+                    log($"  Timeout exporting registry: {regPath}");
+                    continue;
+                }
 
                 if (proc.ExitCode == 0)
                 {
