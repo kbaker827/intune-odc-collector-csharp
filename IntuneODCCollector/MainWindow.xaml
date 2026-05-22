@@ -5,7 +5,23 @@
         Width="750" Height="620" MinWidth="750" MinHeight="500"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="15">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" FontFamily="Segoe UI" FontSize="10">
+            <MenuItem Header="_Help">
+                <MenuItem Header="Check for _Updates" Click="Menu_CheckForUpdates_Click"/>
+                <Separator/>
+                <MenuItem Header="_About Intune ODC Collector" Click="Menu_About_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -107,5 +123,6 @@
                            TextWrapping="Wrap" Padding="4"/>
             </ScrollViewer>
         </GroupBox>
+        </Grid>
     </Grid>
 </Window>
