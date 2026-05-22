@@ -145,6 +145,7 @@ public class CollectorService
             }
         }, ct);
 
+        ct.ThrowIfCancellationRequested();
         progress.Report((100, "Microsoft tool collection complete!"));
     }
 }
