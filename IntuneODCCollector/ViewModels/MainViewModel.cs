@@ -10,8 +10,6 @@ namespace IntuneODCCollector.ViewModels;
 
 public class MainViewModel : INotifyPropertyChanged
 {
-    private const string LogDir = @"C:\IntuneODCLogs";
-
     private readonly CollectorService _collector = new();
     private readonly System.Text.StringBuilder _logBuilder = new();
     private CancellationTokenSource? _cts;
@@ -60,7 +58,7 @@ public class MainViewModel : INotifyPropertyChanged
         var confirm = MessageBox.Show(
             $"This will collect Intune diagnostic logs.\n\n" +
             $"The process takes approximately 10 minutes.\n" +
-            $"Output will be saved to: {LogDir}\n\n" +
+            $"Output will be saved to: {AppConstants.LogDir}\n\n" +
             $"Do you want to continue?",
             "Start Collection",
             MessageBoxButton.YesNo,
@@ -90,7 +88,7 @@ public class MainViewModel : INotifyPropertyChanged
 
             CanOpenFolder = true;
             MessageBox.Show(
-                $"Intune ODC logs have been collected!\n\nLocation: {LogDir}",
+                $"Intune ODC logs have been collected!\n\nLocation: {AppConstants.LogDir}",
                 "Collection Complete",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
@@ -128,11 +126,11 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void OpenFolder()
     {
-        if (System.IO.Directory.Exists(LogDir))
-            System.Diagnostics.Process.Start("explorer.exe", LogDir);
+        if (System.IO.Directory.Exists(AppConstants.LogDir))
+            System.Diagnostics.Process.Start("explorer.exe", AppConstants.LogDir);
         else
             MessageBox.Show(
-                $"Folder not found: {LogDir}",
+                $"Folder not found: {AppConstants.LogDir}",
                 "Not Found",
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);

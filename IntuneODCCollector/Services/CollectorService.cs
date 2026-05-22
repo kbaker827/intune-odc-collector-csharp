@@ -8,8 +8,6 @@ namespace IntuneODCCollector.Services;
 
 public class CollectorService
 {
-    private const string LogDir = @"C:\IntuneODCLogs";
-
     private readonly XmlParserService _xmlParser;
     private readonly FileCollector _fileCollector;
     private readonly RegistryCollector _registryCollector;
@@ -33,7 +31,7 @@ public class CollectorService
         Action<string> log,
         CancellationToken ct)
     {
-        Directory.CreateDirectory(LogDir);
+        Directory.CreateDirectory(AppConstants.LogDir);
         var resultDir = Path.Combine(Path.GetTempPath(), "IntuneODCCollected");
         if (Directory.Exists(resultDir)) Directory.Delete(resultDir, recursive: true);
         Directory.CreateDirectory(resultDir);
@@ -44,7 +42,7 @@ public class CollectorService
 
             using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
             var xmlDownload = new XmlDownloadService(http);
-            var xmlPath = await xmlDownload.GetXmlAsync(LogDir, cacheXml, log, ct);
+            var xmlPath = await xmlDownload.GetXmlAsync(AppConstants.LogDir, cacheXml, log, ct);
             progress.Report((25, "Parsing Intune.XML..."));
 
             var packages = _xmlParser.Parse(xmlPath);
@@ -76,7 +74,7 @@ public class CollectorService
             }
 
             progress.Report((90, "Creating ZIP file..."));
-            var zipPath = _zipService.CreateZip(resultDir, LogDir, hostname);
+            var zipPath = _zipService.CreateZip(resultDir, AppConstants.LogDir, hostname);
             log($"Created ZIP: {Path.GetFileName(zipPath)}");
 
             Directory.Delete(resultDir, recursive: true);
@@ -93,11 +91,11 @@ public class CollectorService
         Action<string> log,
         CancellationToken ct)
     {
-        Directory.CreateDirectory(LogDir);
+        Directory.CreateDirectory(AppConstants.LogDir);
         using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
 
-        var ps1Path = Path.Combine(LogDir, "IntuneODCStandAlone.ps1");
-        var xmlPath = Path.Combine(LogDir, "Intune.xml");
+        var ps1Path = Path.Combine(AppConstants.LogDir, "IntuneODCStandAlone.ps1");
+        var xmlPath = Path.Combine(AppConstants.LogDir, "Intune.xml");
 
         log("Downloading from https://aka.ms/intuneps1");
         progress.Report((10, "Downloading Microsoft Intune ODC script..."));
@@ -125,7 +123,7 @@ public class CollectorService
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true,
-                WorkingDirectory = LogDir,
+                WorkingDirectory = AppConstants.LogDir,
             };
             proc.OutputDataReceived += (_, e) => { if (e.Data != null) log($"  {e.Data}"); };
             proc.ErrorDataReceived += (_, e) => { if (e.Data != null) log($"  ! {e.Data}"); };

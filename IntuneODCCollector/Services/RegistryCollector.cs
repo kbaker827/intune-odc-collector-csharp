@@ -41,6 +41,10 @@ public class RegistryCollector
                     CreateNoWindow = true,
                 };
                 proc.Start();
+                using var reg = ct.Register(() =>
+                {
+                    try { proc.Kill(entireProcessTree: true); } catch { }
+                });
                 bool exited = proc.WaitForExit(30_000);
                 if (!exited)
                 {
