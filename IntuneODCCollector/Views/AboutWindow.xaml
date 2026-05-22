@@ -20,7 +20,7 @@
 
         <!-- App name + icon -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
-            <Image Source="pack://application:,,,/app.ico"
+            <Image x:Name="AppIcon"
                    Width="48" Height="48"
                    Margin="0,0,14,0" VerticalAlignment="Center"
                    RenderOptions.BitmapScalingMode="HighQuality"/>
